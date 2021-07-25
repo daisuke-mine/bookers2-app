@@ -1,0 +1,32 @@
+<main>
+  <p id="notice"></p>
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-12 col-md-8 col-lg-5 px-5 px-sm-0 mx-auto">
+
+        <% if @user.errors.any? %>
+        <%= @user.errors.count %>error
+        <% @user.errors.full_messages.each do |message| %>
+        <%= message %>
+        <% end %>
+        <% end %>
+
+        <h1>User info</h1>
+        <%= form_with model: @user, local:true do |f| %>
+        <label>Name</label>
+        <p><%= f.text_field :name %></p>
+        
+        <label>Image</label>
+        <p><%= f.attachment_field :profile_image, placeholder: "プロフィール画像" %></p>
+        
+        <label>introduction</label>
+        <p><%= f.text_area :introduction %></p>
+        <div class="upload">
+          <%= f.submit " Update User", class: "btn btn-secondary" %>
+        </div>
+        <% end %>
+
+      </div>
+    </div>
+  </div>
+</main>
