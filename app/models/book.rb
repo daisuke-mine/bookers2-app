@@ -10,4 +10,16 @@ class Book < ApplicationRecord
   
   validates :title, presence: true
   validates :body, presence: true, length: { maximum: 200}
+  
+  def following?(user)
+    followings.include?(user)
+  end
+  
+  def follow(user_id)
+    relationships.create(followed_id: user_id)
+  end
+  
+  def unfollow(user_id)
+    relationships.find_by(followed_id: user_id).destroy
+  end
 end
