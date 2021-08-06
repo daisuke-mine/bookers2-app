@@ -2,29 +2,31 @@
   <p id="notice"></p>
   <div class="container px-5 px-sm-0">
     <div class="row">
+      
       <div class="col-md-3">
         <%= render "user", user: @user, book: @book %>
       </div>
-        <div class="col-md-8 offset-md-1">
-          <h2>Book detail</h2>
-          <table class="table">
-            <tbody>
+      
+      <div class="col-md-8 offset-md-1">
+        <h2>Book detail</h2>
+        <table class="table">
+          <tbody>
             <tr>
               <td> <%= attachment_image_tag @user, :profile_image, :fill, 30, 30, fallback: "no_image.jpg"%>
-               <br><%= link_to @user.name, user_path(@user) %></br>
+                <br><%= link_to @user.name, user_path(@user) %></br>
               </td>
               <td> <%= link_to@bookfind.title %> </td>
               <td> <%= @bookfind.body %> </td>
               <td>
                 <div class = "favorite">
                   <% if @bookfind.favorited_by?(current_user) %>
-                  <%= link_to book_favorites_path(@bookfind), method: :delete do %>
-                  ♥<%= @bookfind.favorites.count %>
-                  <% end %>
+                    <%= link_to book_favorites_path(@bookfind), method: :delete do %>
+                      ♥<%= @bookfind.favorites.count %>
+                    <% end %>
                   <% else %>
-                  <%= link_to book_favorites_path(@bookfind), method: :post do %>
-                  ♡<%= @bookfind.favorites.count %>
-                  <% end %>
+                    <%= link_to book_favorites_path(@bookfind), method: :post do %>
+                      ♡<%= @bookfind.favorites.count %>
+                    <% end %>
                   <% end %>
                 </div>
               </td>
@@ -34,48 +36,46 @@
                 </div>
               </td>
               <% if @bookfind.user_id == current_user.id %>
-              <td> <%= link_to "Edit", edit_book_path(@bookfind), class:"btn btn-success"%> </td>
-              <td> <%= link_to "Destroy", book_path(@bookfind), method: :delete, data: {confirm: "本当に消しますか？"}, class:"btn btn-danger" %> </td>
+                <td> <%= link_to "Edit", edit_book_path(@bookfind), class:"btn btn-success"%> </td>
+                <td> <%= link_to "Destroy", book_path(@bookfind), method: :delete, data: {confirm: "本当に消しますか？"}, class:"btn btn-danger" %> </td>
               <% end %>
             </tr>
-            </tbody>
-          </table>
-          <div class = "comment">
-          　<table>
-          　  <tbody>
-            　  <tr>
-                  <% @bookfind.book_comment.each do |comment| %>
+          </tbody>
+        </table>
+        <div class = "comment">
+        　<table>
+        　  <tbody>
+              <tr>
+                <% @bookfind.book_comment.each do |comment| %>
                   <% book_comment_user = comment.user %>
-                  
-                   <td><%= attachment_image_tag comment.user, :profile_image, :fill, 30, 30, fallback: "no_image.jpg"%>
-                     <br> <%= link_to comment.user.name, user_path(comment.user) %>
-                   </td>
-                  
-                   <td> <%= comment.comment %> </td>
-                   <td>
-                     <% if current_user == book_comment_user %>
-                   	 <%= link_to 'Destroy', book_book_comment_path(comment.book_id, comment.id), class: 'btn-sm btn-danger', method: :delete %>
-                   </td>
-        	          <% end %>
+                  <td><%= attachment_image_tag comment.user, :profile_image, :fill, 30, 30, fallback: "no_image.jpg"%>
+                    <br> <%= link_to comment.user.name, user_path(comment.user) %> </br>
+                  </td>
+                  <td> <%= comment.comment %> </td>
+                  <td>
+                    <% if current_user == book_comment_user %>
+                      <%= link_to 'Destroy', book_book_comment_path(comment.book_id, comment.id), class: 'btn-sm btn-danger', method: :delete %>
                     <% end %>
-                </tr>
-              </tbody>
-          　</table>
-          </div>
-          <div class = "text-danger" >
-            <% @book_new_comment.errors.full_messages.each do |message| %>
-            <li><%= message %></li>
-            <% end %>
-          </div>
-            <div class = "new-comments">
-                <%= form_with(model:[@bookfind, @book_new_comment], url: book_book_comment_index_path(@bookfind.id), local: true) do |f| %>
-                <%= f.text_area :comment, placeholder:"コメントを入力してください", class: "form-control" %>
-                <P> <%= f.submit "コメントを送信する", class: "my-1" %> </P>
+                  </td>
                 <% end %>
-            </div>
-
+              </tr>
+            </tbody>
+        　</table>
         </div>
-      
+        
+        <div class = "text-danger" >
+          <% @book_new_comment.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </div>
+        
+        <div class = "new-comments">
+          <%= form_with(model:[@bookfind, @book_new_comment], url: book_book_comment_index_path(@bookfind.id), local: true) do |f| %>
+            <%= f.text_area :comment, placeholder:"コメントを入力してください", class: "form-control" %>
+            <P> <%= f.submit "コメントを送信する", class: "my-1" %> </P>
+          <% end %>
+        </div>
+      </div>
     </div>
   </div>
 </main>
