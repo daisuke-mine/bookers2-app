@@ -13,8 +13,8 @@ class BooksController < ApplicationController
     @user = current_user
     @users = User.all
     @book = Book.new
-    @books = Book.all
-
+    # @books = Book.all
+    @books = Book.includes(:user).sort {|a,b| b.favorites.where("created_at > ?", 7.day.ago).size <=> a.favorites.where("created_at > ?", 7.day.ago).size}
   end
 
   def create
